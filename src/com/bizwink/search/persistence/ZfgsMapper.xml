@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bizwink.search.persistence.ZfgsMapper">
+
+    <sql id="columnid">
+        <if test="columnid!=null">
+            and t.columnid=#{columnid}
+        </if>
+    </sql>
+
+    <sql id="sourcesql">
+        and (t.source like CONCAT(CONCAT('%', #{source1}), '%') or t.source like  CONCAT(CONCAT('%', #{source2}), '%'))
+    </sql>
+
+    <sql id="source1">
+        <if test="source1!=null">
+            and t.source like CONCAT(CONCAT('%', #{source1}), '%')
+        </if>
+    </sql>
+
+    <sql id="source2">
+        <if test="source2!=null">
+            or t.source like  CONCAT(CONCAT('%', #{source2}), '%')
+        </if>
+    </sql>
+
+    <select id="countArticleList" parameterType="map" resultType="int">
+        select  count(t.id) from TBL_ARTICLE t
+        where t.PUBFLAG=0
+        <include refid="columnid" />
+        <include refid="sourcesql"/>
+    </select>
+
+    <select id="getArticleList" parameterType="map" resultType="Article">
+        select B.* from(select A.*, ROWNUM RN from
+        (select  t.id,t.MAINTITLE,t.DIRNAME,t.PUBLISHTIME,t.source from TBL_ARTICLE t
+        where t.PUBFLAG=0
+        <include refid="columnid" />
+        <include refid="sourcesql"/>
+        order BY t.PUBLISHTIME desc
+        ) A ) B where RN between #{startRec} and #{endRec}
+    </select>
+
+</mapper>

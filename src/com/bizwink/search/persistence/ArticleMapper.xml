@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bizwink.search.persistence.ArticleMapper">
+
+    <sql id="Base_Column_List" >
+        id, maintitle,summary, keyword,createdate,dirName,saleprice,marketprice ,pic,bigpic,articlepic,defineurl,fromsiteid,siteid, status
+    </sql>
+    <sql id="limit_select_range">
+           (t.status =1 or  t.status =5)  and t.pubflag =0
+    </sql>
+
+    <select id="getArticle" parameterType="int" resultType="Article">
+        select  <include refid="Base_Column_List" /> ,content
+        from tbl_article
+        where id =#{id}    and (status =1 or  status =5)   and pubflag =0
+    </select>
+
+    <select id="getColumnParents" parameterType="int" resultType="java.lang.String">
+        select wm_concat(id) from tbl_column t CONNECT BY PRIOR t.parentid = id START WITH ID =#{id}
+    </select>
+
+    <select id="getColumnDirname" parameterType="int" resultType="java.lang.String">
+        select dirname from tbl_column where id=#{columnid}
+    </select>
+
+    <select id="getNeedIndex"  parameterType="int" resultType="Article">
+        <![CDATA[
+            select t.id,t.siteid,t.sortid,t.brand,t.pic,t.bigpic,t.columnid ,tc.cname,t.urltype,t.defineurl,
+                    t.articlepic,t.createdate,t.publishtime,tc.dirname,t.filename,t.maintitle,t.summary,t.keyword ,t.content
+            from tbl_article t  ,tbl_column tc
+            where    t.columnid=tc.id  and  (t.status =1 or t.status=2 or t.status =5)  and t.pubflag =0   and t.columnid != 999999
+             and  t.siteid = #{siteid}  and t.indexflag=0  and t.createdate > to_date('2014-01-01','yyyy-mm-dd') and rownum < 200
+        ]]>
+    </select>
+
+    <update id="updateIdxFlagByids" parameterType="String" >
+        update tbl_article  t set  indexflag=1
+        where  id in  (${ids})
+    </update>
+
+    <select id="getDeleteIndex"   resultType="Article">
+        select ta.id, ta.maintitle, ta.summary,ta.createdate,ta.dirName,ta.columnid,ta.siteid ,ta.articlepic ,tb.sitename , ta.bigpic
+        from tbl_article ta , tbl_siteinfo tb
+        where   ta.siteid=tb.siteid    and  ta.id =#{id}    and (ta.status =1 or  ta.status =5)    and ta.pubflag =0
+        and ta.indexflag=0
+    </select>
+</mapper>

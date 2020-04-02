@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bizwink.search.persistence.JwdhMapper">
+
+
+
+    <insert id="submitMessage" parameterType="com.bizwink.search.domain.ReportGangdom">
+        <![CDATA[ insert  into tbl_report_gangdom_messages
+        (id,jbrname,idcardno,jbrlink,jbrpolitical,address,jbrlevel,reportedname,department,rpJob,county,repmaintitle,repclass,repclasses,reportedcontent,
+        createdate,ipadress,yanzhengmsg,searchmsg,auditflag,filename)
+        values (
+        tbl_article_id.NEXTVAL,
+        #{jbrname,jdbcType=VARCHAR},
+        #{idcardno,jdbcType=VARCHAR},
+        #{jbrlink,jdbcType=VARCHAR},
+        #{jbrpolitical,jdbcType=VARCHAR},
+        #{address,jdbcType=VARCHAR},
+        #{jbrlevel,jdbcType=VARCHAR},
+        #{reportedname,jdbcType=VARCHAR},
+        #{department,jdbcType=VARCHAR},
+        #{rpJob,jdbcType=VARCHAR},
+        #{county,jdbcType=VARCHAR},
+        #{repmaintitle,jdbcType=VARCHAR},
+        #{repclass,jdbcType=VARCHAR},
+        #{repclasses,jdbcType=VARCHAR},
+        #{reportedcontent,jdbcType=VARCHAR},
+        sysdate,
+        #{ipadress,jdbcType=VARCHAR},
+        #{yanzhengmsg,jdbcType=VARCHAR},
+        #{searchmsg,jdbcType=VARCHAR},
+        #{auditflag,jdbcType=SMALLINT},
+        #{filename,jdbcType=VARCHAR}
+        )]]>
+    </insert>
+
+    <select id="getReportGangdom" parameterType="String" resultType="int">
+        select count(id) from tbl_report_gangdom_messages where yanzhengmsg=#{Md5str}
+    </select>
+
+</mapper>

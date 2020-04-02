@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bizwink.search.persistence.ArchivesMapper">
+
+    <sql id="searchWord">
+        <if test="searchWord!=null">
+            and t.archivesname like CONCAT(CONCAT('%', #{searchWord}), '%')
+        </if>
+    </sql>
+
+    <sql id="startdate">
+        <if test="startdate!=null">
+            and to_char(t.STARTDATE,'YYYY-MM') like CONCAT(CONCAT('%', #{startdate}), '%')
+        </if>
+    </sql>
+    <sql id="enddate">
+        <if test="enddate!=null">
+            and to_char(t.enddate,'YYYY-MM') like CONCAT(CONCAT('%', #{enddate}), '%')
+        </if>
+    </sql>
+
+    <sql id="archivesid">
+        <if test="archivesid!=null">
+            and t.archivesid like CONCAT(CONCAT('%', #{archivesid}), '%')
+        </if>
+    </sql>
+
+    <select id="countArchivesList" parameterType="map" resultType="int">
+        select count(t.id) from TBL_ARCHIVES t
+        where 1=1
+        <include refid="searchWord" />
+        <include refid="startdate" />
+        <include refid="enddate" />
+    </select>
+
+
+    <select id="getArchivesList" parameterType="map" resultType="Archives">
+        select B.* from(select A.*, ROWNUM RN from (
+        select t.id,t.archivesid,t.startdate,t.enddate,t.archivesname,t.archivespath from TBL_ARCHIVES t
+        where 1=1
+        <include refid="searchWord" />
+        <include refid="startdate" />
+        <include refid="enddate" />
+        order by t.createdate desc
+        ) A ) B where RN between  #{startRec} and #{endRec}
+    </select>
+
+    <select id="countArchivessList" parameterType="map" resultType="int">
+        select count(t.id) from TBL_ARCHIVESS t
+        where 1=1
+        <include refid="searchWord" />
+        <include refid="archivesid" />
+    </select>
+
+
+    <select id="getArchivessList" parameterType="map" resultType="Archives">
+        select B.* from(select A.*, ROWNUM RN from (
+        select t.id,t.num,t.archivesid,t.productiondate,t.identifyyear,t.archivesname,t.archivespath from TBL_ARCHIVESS t
+        where 1=1
+        <include refid="searchWord" />
+        <include refid="archivesid" />
+        order by t.createdate desc
+        ) A ) B where RN between  #{startRec} and #{endRec}
+    </select>
+
+    </mapper>

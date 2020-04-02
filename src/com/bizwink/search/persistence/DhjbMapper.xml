@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bizwink.search.persistence.DhjbMapper">
+
+
+
+    <insert id="submitMessage" parameterType="com.bizwink.search.domain.ReportGangdom">
+        <![CDATA[ insert  into tbl_report_gangdom_message
+        (id,jbrname,sex,idcardno,telphone,address,postcode,reportedname,epithet,rpaddress,rpidcardno,province,city,county,reportedcontent,
+        gzname,unittitle,unlevel,gzreportedcontent,createdate,ipadress,yanzhengmsg)
+        values (
+        tbl_article_id.NEXTVAL,
+        #{jbrname,jdbcType=VARCHAR},
+        #{sex,jdbcType=SMALLINT},
+        #{idcardno,jdbcType=VARCHAR},
+        #{telphone,jdbcType=VARCHAR},
+        #{address,jdbcType=VARCHAR},
+        #{postcode,jdbcType=VARCHAR},
+        #{reportedname,jdbcType=VARCHAR},
+        #{epithet,jdbcType=VARCHAR},
+        #{rpaddress,jdbcType=VARCHAR},
+        #{rpidcardno,jdbcType=VARCHAR},
+        #{province,jdbcType=VARCHAR},
+        #{city,jdbcType=VARCHAR},
+        #{county,jdbcType=VARCHAR},
+        #{reportedcontent,jdbcType=VARCHAR},
+        #{gzname,jdbcType=VARCHAR},
+        #{unittitle,jdbcType=VARCHAR},
+        #{unlevel,jdbcType=VARCHAR},
+        #{gzreportedcontent,jdbcType=VARCHAR},
+        sysdate,
+        #{ipadress,jdbcType=VARCHAR},
+        #{yanzhengmsg,jdbcType=VARCHAR}
+        )]]>
+    </insert>
+
+</mapper>
