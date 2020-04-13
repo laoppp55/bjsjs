@@ -107,7 +107,7 @@
 </head>
 
 <body bgcolor="#f5f6f8">
-<div><jsp:include page="/inc/head2020.shtml"></jsp:include></div>
+<div><jsp:include page="/inc/head2020_big5.shtml"></jsp:include></div>
 <!--以为为头部公共部分-->
 <div style="margin-top: 50px;margin-left: 300px;">
   <form action="answer.jsp" method="post" name="answerForm">
@@ -225,6 +225,6 @@
 </div>
 <div class="clert">&nbsp;</div>
 <!--底部开始-->
-<div class="bottom"><jsp:include page="/inc/tail2020.shtml"></jsp:include></div>
+<div class="bottom"><jsp:include page="/inc/tail2020_big5.shtml"></jsp:include></div>
 </body>
 </html>

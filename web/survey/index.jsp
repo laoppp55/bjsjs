@@ -2,7 +2,8 @@
 <%@ page import="com.bizwink.webapps.survey.define.IDefineManager" %>
 <%@ page import="com.bizwink.webapps.survey.define.DefinePeer" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.bizwink.cms.util.ParamUtil" %><%--
+<%@ page import="com.bizwink.cms.util.ParamUtil" %>
+<%@ page import="com.bizwink.webapps.survey.define.Define" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2019/11/13
@@ -41,6 +42,13 @@
     <title>调查问题列表</title>
 </head>
 <body>
-
+<ul>
+<%
+    for (int i = 0; i < currentlist.size(); i++) {
+        Define define = (Define)currentlist.get(i);
+%>
+    <li></li><a href="/survey/viewSurvey.jsp?sid=<%=define.getId()%>" target="_blank"><%=define.getSurveyname()%></a></li>
+<%}%>
+</ul>
 </body>
 </html>
