@@ -142,7 +142,7 @@ public class DefinePeer implements IDefineManager {
         return list;
     }
 
-    private static String GET_A_DEFINE_SURVEY = "select id,surveyname,notes,createtime,useflag from " +
+    private static String GET_A_DEFINE_SURVEY = "select id,surveyname,notes,createtime,useflag,createtime,startdate,enddate from " +
             "su_survey where id = ?";
 
     public Define getADefineSurvey(int sid) throws DefineException {
@@ -643,6 +643,8 @@ public class DefinePeer implements IDefineManager {
             define.setNotes(rs.getString("notes"));
             define.setCreatetime(rs.getTimestamp("createtime"));
             define.setUserflag(rs.getInt("useflag"));
+            define.setStartdatetime(rs.getTimestamp("startdate"));
+            define.setEnddatetime(rs.getTimestamp("enddate"));
         } catch (SQLException e) {
             e.printStackTrace();
         }

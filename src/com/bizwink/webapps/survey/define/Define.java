@@ -11,6 +11,8 @@ public class Define {
     private Timestamp createtime;
     private int siteid;
     private int userflag;
+    private Timestamp startdatetime;
+    private Timestamp enddatetime;
 
     //for su_dquestion
     private int qid;
@@ -60,6 +62,22 @@ public class Define {
 
     public void setCreatetime(Timestamp createtime) {
         this.createtime = createtime;
+    }
+
+    public Timestamp getStartdatetime() {
+        return startdatetime;
+    }
+
+    public void setStartdatetime(Timestamp startdatetime) {
+        this.startdatetime = startdatetime;
+    }
+
+    public Timestamp getEnddatetime() {
+        return enddatetime;
+    }
+
+    public void setEnddatetime(Timestamp enddatetime) {
+        this.enddatetime = enddatetime;
     }
 
     public int getQid() {
