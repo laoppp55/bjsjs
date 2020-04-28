@@ -27,12 +27,25 @@
     }
 
     Define defineSurvey = defineMgr.getADefineSurvey(sid);
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    SimpleDateFormat contentsdf = new SimpleDateFormat("yyyy-MM-dd");
     Timestamp now = new Timestamp(System.currentTimeMillis());
-    Timestamp startdate = new Timestamp(defineSurvey.getStartdatetime().getTime());
-    Timestamp enddate = new Timestamp(defineSurvey.getEnddatetime().getTime());
+    Calendar s_cal = Calendar.getInstance();
+    s_cal.set(Calendar.YEAR,2020);
+    s_cal.set(Calendar.MONTH,3);
+    s_cal.set(Calendar.DAY_OF_MONTH,27);
+    Timestamp startdate = new Timestamp(s_cal.getTimeInMillis());
+
+    Calendar e_cal = Calendar.getInstance();
+    e_cal.set(Calendar.YEAR,2020);
+    e_cal.set(Calendar.MONTH,4);
+    e_cal.set(Calendar.DAY_OF_MONTH,27);
+    Timestamp enddate = new Timestamp(e_cal.getTimeInMillis());
     boolean submit_flag = false;
-    if (now.before(enddate) && now.after(startdate)) submit_flag = true;
+    if (sid==301) {
+        if (now.before(enddate) && now.after(startdate)) submit_flag = true;
+    }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -120,7 +133,7 @@
 
 <body bgcolor="#f5f6f8">
 <div><jsp:include page="/inc/head2020.shtml"></jsp:include></div>
-<!--以为为头部公共部分-->
+
 <div class="main">
     <div class="location">当前位置：<A HREF=/index.shtml>首页</A> > <A HREF=/zmhd/index.shtml>政民互动</A> > <A HREF=/zmhd/dczj/index.shtml>调查征集</A>
 
@@ -130,11 +143,11 @@
     <div class="article">
         <div class="title"><%=defineSurvey.getSurveyname()%></div>
 
-        <div class="time">发布日期：<%=sdf.format(defineSurvey.getStartdatetime())%> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;来源：区经济和信息化局</div>
+        <div class="time">发布日期：<%=contentsdf.format(defineSurvey.getStartdatetime())%> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;来源：区经济和信息化局</div>
 
         <div class="txt">
-            <p style="text-align: center">开始时间：<%=sdf.format(defineSurvey.getStartdatetime())%>　　结束时间：<%=sdf.format(defineSurvey.getEnddatetime())%></p>
-
+            <p style="text-align: center">开始时间：<%=contentsdf.format(defineSurvey.getStartdatetime())%>　　结束时间：<%=contentsdf.format(defineSurvey.getEnddatetime())%></p>
+            <!--以为为头部公共部分-->
             <div style="margin-top: 50px;margin-left: 300px;">
                 <form action="answer.jsp" method="post" name="answerForm">
                     <input type="hidden" name="sid" value="<%=sid%>">
@@ -250,10 +263,10 @@
                 </form>
             </div>
             <div class="clert">&nbsp;</div>
+            <!--底部开始-->
+            <div class="bottom"><jsp:include page="/inc/tail2020.shtml"></jsp:include></div>
         </div>
     </div>
 </div>
-<!--底部开始-->
-<div class="bottom"><jsp:include page="/inc/tail2020.shtml"></jsp:include></div>
 </body>
 </html>

@@ -1,40 +1,55 @@
-﻿<%@ page import="java.util.Enumeration" %>
-<%@ page import="com.bjtoon.uia.sdk.domain.AccessTokenVo" %>
-<%@ page import="com.unittest.sso" %>
+﻿<%@ page import="com.bjtoon.uia.sdk.domain.AccessTokenVo" %>
 <%@ page import="com.bjtoon.uia.sdk.domain.UserInfoVo" %>
-<%@ page import="com.google.gson.GsonBuilder" %>
-<%@ page import="com.google.gson.Gson" %>
-<%@ page import="com.bizwink.cms.util.SecurityUtil" %>
+<%@ page import="com.unittest.sso" %>
+<%@ page import="java.util.Enumeration" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Enumeration<String> paraNames = request.getParameterNames();
-    String grant_code = null;
-    while(paraNames.hasMoreElements()){
+   // String grant_code = null;
+	//String  state=null;
+
+   /* while(paraNames.hasMoreElements()){
         String paraKey = paraNames.nextElement();
         String paraValue  = request.getParameter(paraKey);
         System.out.println(paraKey + "=" + paraValue);
         if (paraKey.equals("code")) {
             grant_code = paraValue;
-            break;
+            //break;
+        }
+        if(paraKey.equals("state")){
+            state = paraValue;
+        }
+
+    }*/
+    String grant_code = request.getParameter("code");
+    String state = request.getParameter("state");
+    if(grant_code!= null){ //获取grant_code
+        sso sso = new sso();
+        UserInfoVo userInfoVo;
+        AccessTokenVo accessTokenVo = sso.getAccessToken(grant_code);
+        if(accessTokenVo!=null) { //登录成功
+            userInfoVo = sso.getUserInfo(accessTokenVo); //获取用户信息
+            if(userInfoVo !=null ) {  //获取用户信息成功
+                System.out.println("login OK!!!!");
+                System.out.println("登录：grant_code="+grant_code);
+                String username = userInfoVo.getUserName();
+                session.setAttribute("grantCode", grant_code);
+               /* Cookie CodeCookie = new Cookie("grantCode", grant_code);
+                CodeCookie.setPath("/");
+                response.addCookie(CodeCookie);*/
+                Cookie userCookie = new Cookie("username", username);
+                userCookie.setMaxAge(7200);
+                userCookie.setPath("/");
+                response.addCookie(userCookie);
+                if(state!=null&&state.equals("1")){
+                    response.sendRedirect(response.encodeRedirectURL("/zmhd/wyxx/"));
+                    //return;
+                }
+            }
+
         }
     }
-    session.setAttribute("grantCode",grant_code);
-    sso sso = new sso();
-    UserInfoVo userInfoVo = null;
-    AccessTokenVo accessTokenVo = sso.getAccessToken(grant_code);
-    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-    String jsondata="{\"userName\":\"\"}";
-    if(accessTokenVo!=null) {
-        userInfoVo = sso.getUserInfo(accessTokenVo);
-        jsondata = gson.toJson(userInfoVo);
-        System.out.println(jsondata);
-    }
+    response.sendRedirect(response.encodeRedirectURL("/"));
+    //return;
 
-    SecurityUtil securityUtil = new SecurityUtil();
-    Cookie loginCookie = new Cookie("AuthInfo_cookie",securityUtil.encrypt(userInfoVo.getUserName() + "-" + userInfoVo.getUserId(),null));
-    loginCookie.setDomain("bjsjs.gov.cn");
-    loginCookie.setPath("/");
-    loginCookie.setMaxAge(-1);
-    response.addCookie(loginCookie);
-    response.sendRedirect("/index.shtml");
 %>

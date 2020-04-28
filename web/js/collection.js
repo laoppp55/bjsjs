@@ -21,6 +21,7 @@
 
           htmlobj=$.ajax({
               url:"/collection/addCollectionInfos.jsp",
+		      type:'post',
               data:{
                   article:articleid,
                   content:content,
@@ -30,9 +31,9 @@
               async:false,
               success:function(jsondata){
                   if (jsondata.result == "true") {
-                      alert('文章删除成功！！！')
+                      alert('信息提交成功！！！')
                   } else {
-                      alert('文章删除失败！！！');
+                      alert('信息提交失败！！！');
                   }
               },
               error: function (jqXHR, textStatus, errorThrown) {
@@ -56,6 +57,7 @@
           var md5str =hex_md5("&article=" + articleid + "&title=" + title + "&content=" + content + "&publicflag=" + publicflag + "&yzcode=" + yzcode);
           htmlobj=$.ajax({
               url:"/collection/addCollectionInfos.jsp",
+			  type:'post',
               data:{
                   article:articleid,
                   title:title,
@@ -68,9 +70,9 @@
               async:false,
               success:function(jsondata){
                   if (jsondata.result == "true") {
-                      alert('文章删除成功！！！')
+                      alert('信息提交成功！！！')
                   } else {
-                      alert('文章删除失败！！！');
+                      alert('信息提交失败！！！');
                   }
               },
               error: function (jqXHR, textStatus, errorThrown) {

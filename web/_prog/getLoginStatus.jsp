@@ -3,7 +3,7 @@
 <%@ page import="com.bjtoon.uia.sdk.response.UiaApiResponse" %>
 <%@ page import="com.google.gson.GsonBuilder" %>
 <%@ page import="com.google.gson.Gson" %>
-<%@ page import="com.bizwink.cms.util.JSON" %>
+<%@ page import="com.bizwink.util.JSON" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     sso sso = new sso();
